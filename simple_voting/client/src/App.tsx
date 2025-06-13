@@ -3,7 +3,7 @@ import Web3, { Contract, type ContractAbi } from 'web3';
 import './App.css';
 
 // Define the contract address
-const contractAddress = "0x847abb4fc85a108F59eEcCE5c3f119CDa53b5B56"; // Replace with your deployed contract address
+const contractAddress = "0xC6BbD4fC709ED9d08B5f60256b209dd84f3944df"; // Replace with your deployed contract address
 
 // Define the contract ABI
 const contractABI: ContractAbi = [
@@ -163,7 +163,12 @@ const App: React.FC = () => {
       return;
     }
     try {
-      await contract.methods.vote(candidateId).send({ from: account });
+      await contract.methods.vote(candidateId).send({
+        from: account,
+        gas: '300000',
+        gasPrice: (await web3!.eth.getGasPrice()).toString()
+      });
+
       alert("Vote successfully cast!");
       loadCandidates(contract);
     } catch (err: unknown) {
